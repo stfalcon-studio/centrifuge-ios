@@ -9,7 +9,7 @@
 import Foundation
 
 public struct CentrifugeClientMessage {
-    public let uid: String
+    public let id: Int
     public let method: CentrifugeMethod
     public let params: [String : Any]
 }
@@ -17,20 +17,27 @@ public struct CentrifugeClientMessage {
 extension CentrifugeClientMessage: Equatable {}
 
 public func ==(lhs: CentrifugeClientMessage, rhs: CentrifugeClientMessage) -> Bool {
-    return lhs.uid == rhs.uid
+    return lhs.id == rhs.id
 }
 
 public struct CentrifugeServerMessage {
-    public let uid: String?
-    public let method: CentrifugeMethod
+    public let id: Int?
+    public let method: CentrifugeMethod?
     public let error: String?
     public let body: [String : Any]?
+
+    init(id: Int? = nil, error: String?, method: CentrifugeMethod? = nil, body: [String : Any]?) {
+        self.body = body
+        self.id = id
+        self.error = error
+        self.method = method
+    }
 }
 
 extension CentrifugeServerMessage: Equatable {}
 
 public func ==(lhs: CentrifugeServerMessage, rhs: CentrifugeServerMessage) -> Bool {
-    if let luid = lhs.uid, let ruid = rhs.uid {
+    if let luid = lhs.id, let ruid = rhs.id {
         return luid == ruid
     }
     return false
@@ -39,13 +46,11 @@ public func ==(lhs: CentrifugeServerMessage, rhs: CentrifugeServerMessage) -> Bo
 public struct CentrifugeCredentials {
     let token : String
     let user : String
-    let timestamp : String
     let info: String?
-    
-    public init(token: String, user: String, timestamp:String, info: String? = nil) {
+
+    public init(token: String, user: String, info: String? = nil) {
         self.token = token
         self.user = user
-        self.timestamp = timestamp
         self.info = info
     }
 }
