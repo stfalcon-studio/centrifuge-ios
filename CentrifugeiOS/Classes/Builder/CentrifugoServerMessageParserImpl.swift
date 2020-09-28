@@ -34,7 +34,7 @@ class CentrifugeServerMessageParserImpl: CentrifugeServerMessageParser {
 
         }catch {
             //TODO: add error thrown
-            assertionFailure("Error: Invalid message json")
+            print("Error: Invalid message json")
             return []
         }
     }
